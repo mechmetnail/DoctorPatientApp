@@ -1,0 +1,134 @@
+﻿@model Patient
+
+@{
+	ViewData["Title"] = "Patient Details";
+}
+
+<div class="container">
+	<h2>@Model.FullName</h2>
+
+	<!-- Patient Informations -->
+	<div class="row mb-4">
+		<div class="col-md-6">
+			<dl class="row">
+				<dt class="col-sm-4">Patient Id:</dt>
+				<dd class="col-sm-8"><input class="form-control-plaintext" readonly value="@ViewData["PatientId"]"></dd>
+
+				<dt class="col-sm-4">EFKA No:</dt>
+				<dd class="col-sm-8">@Model.Efka</dd>
+
+				<dt class="col-sm-4">Phone:</dt>
+				<dd class="col-sm-8">@Model.Phone</dd>
+
+				<dt class="col-sm-4">AFM:</dt>
+				<dd class="col-sm-8">@Model.AFM</dd>
+
+				<dt class="col-sm-4">Address:</dt>
+				<dd class="col-sm-8">@Model.Address</dd>
+
+				<dt class="col-sm-4">City:</dt>
+				<dd class="col-sm-8">@Model.City</dd>
+			</dl>
+		</div>
+		<div class="col-md-6">
+			<img src="~/@Model.PhotoPath" width="100" class="img-fluid" alt="Patient Photo">
+		</div>
+	</div>
+
+
+	<!-- Add New Examination -->
+	<hr>
+	<h4>Add New Examination</h4>
+	<br>
+	<div class="container">
+		<!-- Details.cshtml içinde -->
+		<a class="btn btn-primary"
+		asp-controller="Patients"
+		asp-action="CreateExam"
+		asp-route-id="@Model.PatientId">
+			<!-- ID'yi ekle -->
+			Create Examination
+		</a>
+	</div>
+
+	<br>
+	<!-- Examination Records -->
+	<h4>Examination History</h4>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Results</th>
+				<th>Medicines</th>
+				<th>Notes</th>
+				<th>Problem Photos 1</th>
+				<th>Problem Photos 2</th>
+				<th>Problem Photos 3</th>
+				<th>Problem Photos 4</th>
+				<th style="width: 115px"></th>
+			</tr>
+		</thead>
+		<tbody>
+
+			@foreach (var exam in Model.Examination)
+			{
+				<tr>
+					<td>@exam.ExamDate.ToString("dd/MM/yyyy")</td>
+					<td>@exam.Results</td>
+					<td>@exam.Medicines</td>
+					<td>@exam.Notes</td>
+					<td>
+						@if (exam.ProblemPhotoPath != null)
+						{
+							<img src="~/@exam.ProblemPhotoPath" width="70" class="img-fluid" alt="Patient Photo">
+						}
+						else
+						{
+							<img src="~/img/nophoto.jpg" width="70" class="img-fluid" alt="Patient Photo">
+						}
+					</td>
+					<td>
+						@if (exam.ProblemPhotoPath2 != null)
+						{
+							<img src="~/@exam.ProblemPhotoPath2" width="70" class="img-fluid" alt="Patient Photo">
+						}
+						else
+						{
+							<img src="~/img/nophoto.jpg" width="70" class="img-fluid" alt="Patient Photo">
+						}
+					</td>
+					<td>
+						@if (exam.ProblemPhotoPath3 != null)
+						{
+							<img src="~/@exam.ProblemPhotoPath3" width="70" class="img-fluid" alt="Patient Photo">
+						}
+						else
+						{
+							<img src="~/img/nophoto.jpg" width="70" class="img-fluid" alt="Patient Photo">
+						}
+					</td>
+					<td>
+						@if (exam.ProblemPhotoPath4 != null)
+						{
+							<img src="~/@exam.ProblemPhotoPath4" width="70" class="img-fluid" alt="Patient Photo">
+						}
+						else
+						{
+							<img src="~/img/nophoto.jpg" width="70" class="img-fluid" alt="Patient Photo">
+						}
+					</td>
+					<td style="white-space:nowrap">
+
+						<a class="btn btn-primary btn-sm" asp-controller="Patients" asp-action="EditExam" asp-route-id="@exam.ExaminationId">Edit</a>
+
+						<a class="btn btn-danger btn-sm" asp-controller="Patients" asp-action="DeleteExam" asp-route-id="@exam.ExaminationId">Delete</a>
+
+					</td>
+				</tr>
+			}
+
+		</tbody>
+	</table>
+
+	<a asp-action="Index" class="btn btn-secondary">Back</a>
+</div>

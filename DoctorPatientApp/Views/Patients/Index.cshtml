@@ -1,0 +1,53 @@
+﻿@model List<Patient>
+@{
+	ViewData["Title"] = "Patients Page";
+}
+<div class="search-container">
+	<input type="text" id="searchInput" placeholder="Search Patients...">
+	<button class="btn btn-primary" id="searchButton">Search</button>
+	<br><br>
+	<a class="btn btn-secondary" asp-controller="Patients" asp-action="Create">Create Patient</a>
+</div>
+<br>
+<table class="table table-sm table-bordered">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Efka</th>
+			<th>Address</th>
+			<th>City</th>
+			<th>Phone</th>
+			<th>AFM</th>
+			<th>Photo</th>
+			<th>Date</th>
+			<th style="width: 115px"></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var patient in Model)
+		{
+			<tr>
+				<td>@patient.PatientId</td>
+				<td>@patient.FullName</td>
+				<td>@patient.Efka</td>
+				<td>@patient.Address</td>
+				<td>@patient.City</td>
+				<td>@patient.Phone</td>
+				<td>@patient.AFM</td>
+				<td><img src="~/@patient.PhotoPath" width="100" /></td>
+				<td>@patient.EnrollingDate.ToString("dd/MM/yyyy")</td>
+
+				<td style="white-space:nowrap">
+
+					<a class="btn btn-success btn-sm" asp-controller="Patients" asp-action="Details" asp-route-id="@patient.PatientId">Details</a>
+
+					<a class="btn btn-primary btn-sm" asp-controller="Patients" asp-action="Edit" asp-route-id="@patient.PatientId">Edit</a>
+
+					<a class="btn btn-danger btn-sm" asp-controller="Patients" asp-action="DeleteConfirmation" asp-route-id="@patient.PatientId">Delete</a>
+
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

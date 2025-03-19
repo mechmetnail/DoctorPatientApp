@@ -1,0 +1,39 @@
+﻿@model Examination
+
+<h2>Delete Examination</h2>
+<hr>
+
+<div class="row">
+    <div class="col-md-8 mx-auto rounded border p-3">
+        <h3>Are you sure you want to delete this examination?</h3>
+        <div>
+            <h4>Examination Details</h4>
+            <dl class="row">
+                <dt class="col-sm-4">Exam Date</dt>
+                <dd class="col-sm-8">@Model.ExamDate.ToString("g")</dd>
+
+                <dt class="col-sm-4">Results</dt>
+                <dd class="col-sm-8">@Model.Results</dd>
+
+                <dt class="col-sm-4">Notes</dt>
+                <dd class="col-sm-8">@Model.Notes</dd>
+
+                <dt class="col-sm-4">Medicines</dt>
+                <dd class="col-sm-8">@Model.Medicines</dd>
+            </dl>
+        </div>
+
+        <form asp-action="DeleteExam" method="post">
+            <input type="hidden" asp-for="ExaminationId" />
+            <input type="hidden" asp-for="PatientId" />
+            <div class="row mb-3">
+                <div class="offset-sm-4 col-sm-4 d-grid">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+                <div class="col-sm-4 d-grid">
+                    <a asp-action="Details" asp-controller="Patients" asp-route-id="@Model.PatientId" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

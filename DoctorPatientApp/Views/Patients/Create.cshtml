@@ -1,0 +1,88 @@
+﻿@model PatientDto
+
+<h2>Create Patient</h2>
+<hr>
+
+<div class="row">
+	<div class="col-md-8 mx-auto rounded border p-3">
+		<h2 class="text-center mb-5">New Patient</h2>
+
+		<form method="post" enctype="multipart/form-data" asp-action="Create">
+			<div class="row mb-3">
+				<label for="" class="col-sm-4 col-form-label">Full Name</label>
+				<div class="col-sm-8">
+					<input class="form-control" asp-for="FullName">
+					<span asp-validation-for="FullName" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<label for="" class="col-sm-4 col-form-label">Efka</label>
+				<div class="col-sm-8">
+					<input class="form-control" asp-for="Efka">
+					<span asp-validation-for="Efka" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<label for="" class="col-sm-4 col-form-label">Address</label>
+				<div class="col-sm-8">
+					<textarea class="form-control" asp-for="Address"></textarea>
+					<span asp-validation-for="Address" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<label for="" class="col-sm-4 col-form-label">City</label>
+				<div class="col-sm-8">
+					<input class="form-control" asp-for="City">
+					<span asp-validation-for="City" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<label for="" class="col-sm-4 col-form-label">Phone</label>
+				<div class="col-sm-8">
+					<input class="form-control" asp-for="Phone">
+					<span asp-validation-for="Phone" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<label for="" class="col-sm-4 col-form-label">AFM</label>
+				<div class="col-sm-8">
+					<input class="form-control" asp-for="AFM">
+					<span asp-validation-for="AFM" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<label for="" class="col-sm-4 col-form-label">Photo</label>
+				<div class="col-sm-8">
+					<input class="form-control" asp-for="Photo">
+					<span asp-validation-for="Photo" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<label class="col-sm-4 col-form-label">Enrolling Date</label>
+				<div class="col-sm-8">
+					<input class="form-control" asp-for="EnrollingDate" type="date">
+					<span asp-validation-for="EnrollingDate" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<div class="offset-sm-4 col-sm-4 d-grid">
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+				<div class="col-sm-4 d-grid">
+					<a asp-action="Index" class="btn btn-outline-primary" role="button">Cancel</a>
+				</div>
+			</div>
+
+		</form>
+
+	</div>
+</div>
+

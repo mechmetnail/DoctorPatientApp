@@ -1,0 +1,58 @@
+﻿@model PatientDto
+@{
+	ViewData["Title"] = "Patient";
+}
+
+<div class="container mt-4">
+    <div class="card border-danger">
+        <div class="card-header bg-danger text-white">
+            <h4 class="text-center">Are you sure want to delete</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="@ViewData["PhotoPath"]" 
+                         class="img-fluid rounded mb-3" 
+                         alt="@Model.FullName">
+                </div>
+                <div class="col-md-8">
+                    <h5 class="text-danger">@Model.FullName</h5>
+                    <dl class="row">
+                        <dt class="col-sm-4">EFKA No:</dt>
+                        <dd class="col-sm-8">@Model.Efka</dd>
+                        
+                        <dt class="col-sm-4">Address:</dt>
+                        <dd class="col-sm-8">@Model.Address</dd>
+
+                        <dt class="col-sm-4">City:</dt>
+                        <dd class="col-sm-8">@Model.City</dd>
+
+                        <dt class="col-sm-4">Phone:</dt>
+                        <dd class="col-sm-8">@Model.Phone</dd>
+
+                        <dt class="col-sm-4">AFM:</dt>
+                        <dd class="col-sm-8">@Model.AFM</dd>
+
+                        <dt class="col-sm-4">Enrolling Date:</dt>
+                        <dd class="col-sm-8">@Model.EnrollingDate.ToString("dd/MM/yyyy")</dd>
+
+                    </dl>
+                </div>
+            </div>
+            
+            <form asp-action="Delete" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@ViewData["PatientId"]" />
+                
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-danger btn-lg">
+                        <i class="fas fa-trash-alt"></i>Delete Permanently
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-times"></i>Give up
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

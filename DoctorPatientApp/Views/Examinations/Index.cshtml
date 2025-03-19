@@ -1,0 +1,59 @@
+﻿@model List<Examination>
+@{
+	ViewData["Title"] = "Patients Page";
+}
+<div class="search-container">
+	<input type="text" id="searchInput" placeholder="Search...">
+	<button class="btn btn-primary" id="searchButton">Search</button>
+	<br><br>
+	<a class="btn btn-info" asp-controller="Patients" asp-action="Index">All Patients</a>
+</div>
+<br>
+<table class="table table-sm table-bordered">
+	<thead>
+		<tr>
+			<th>P. Id</th>
+			<th>E. Id</th>
+			<th>P. Name</th>
+			<th>P. Efka</th>
+			<th>E. Results</th>
+			<th>E. Notes</th>
+			<th>E. Medicines</th>
+			<th>E. Photo</th>
+			<th>E. Date</th>
+			<th style="width: 115px"></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var exam in Model)
+		{
+			<tr>
+				<td>@exam.PatientId</td>
+				<td>@exam.ExaminationId</td>
+				<td>@exam.Patient.FullName</td>
+				<td>@exam.Patient.Efka</td>				
+				<td>@exam.Results</td>
+				<td>@exam.Notes</td>
+				<td>@exam.Medicines</td>
+				<td>
+					@if (exam.ProblemPhotoPath != null)
+					{
+						<img src="~/@exam.ProblemPhotoPath" width="100" class="img-fluid" alt="Patient Photo">
+					}
+					else
+					{
+						<img src="~/img/nophoto.jpg" width="100" class="img-fluid" alt="Patient Photo">
+					}					
+				</td>
+				<td>@exam.ExamDate.ToString("dd/MM/yyyy")</td>
+				<td style="white-space:nowrap">
+
+					<a class="btn btn-success btn-sm" asp-controller="Patients" asp-action="Details" asp-route-id="@exam.PatientId">Details</a>
+
+					<a class="btn btn-primary btn-sm" asp-controller="Patients" asp-action="EditExam" asp-route-id="@exam.ExaminationId">Edit</a>
+
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

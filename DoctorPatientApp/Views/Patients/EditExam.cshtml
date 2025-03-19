@@ -1,0 +1,119 @@
+﻿@model ExamCreateViewModel
+
+<h2>Edit Examination</h2>
+<hr>
+
+<div class="row">
+    <div class="col-md-8 mx-auto rounded border p-3">
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <h2 class="text-center mb-5">Edit Examination</h2>
+
+         <form method="post" enctype="multipart/form-data" asp-action="EditExam">
+            <input type="hidden" asp-for="ExaminationDto.ExaminationId" />
+            <input type="hidden" asp-for="ExaminationDto.PatientId" />
+            <input type="hidden" asp-for="ExaminationDto.ProblemPhoto" />
+            <input type="hidden" asp-for="ExaminationDto.ProblemPhoto2" />
+            <input type="hidden" asp-for="ExaminationDto.ProblemPhoto3" />
+            <input type="hidden" asp-for="ExaminationDto.ProblemPhoto4" />
+
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Exam Date</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="ExaminationDto.ExamDate" type="datetime-local">
+                    <span asp-validation-for="ExaminationDto.ExamDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Results</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="ExaminationDto.Results">
+                    <span asp-validation-for="ExaminationDto.Results" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Notes</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="ExaminationDto.Notes">
+                    <span asp-validation-for="ExaminationDto.Notes" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Medicines</label>
+                <div class="col-sm-8">
+                    <textarea class="form-control" asp-for="ExaminationDto.Medicines"></textarea>
+                    <span asp-validation-for="ExaminationDto.Medicines" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Problem Photo 1</label>
+                <div class="col-sm-8">
+                    @if (!string.IsNullOrEmpty(Model.ExaminationDto.ProblemPhotoPath))
+                    {
+                        <img src="@Model.ExaminationDto.ProblemPhotoPath" class="img-thumbnail mb-2" style="max-width: 100px;" />
+                    }
+                    <input class="form-control" asp-for="ExaminationDto.ProblemPhoto" type="file">
+                    <span asp-validation-for="ExaminationDto.ProblemPhoto" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Problem Photo 2</label>
+                <div class="col-sm-8">
+                    @if (!string.IsNullOrEmpty(Model.ExaminationDto.ProblemPhotoPath2))
+                    {
+                        <img src="@Model.ExaminationDto.ProblemPhotoPath2" class="img-thumbnail mb-2" style="max-width: 100px;" />
+                    }
+                    <input class="form-control" asp-for="ExaminationDto.ProblemPhoto2" type="file">
+                    <span asp-validation-for="ExaminationDto.ProblemPhoto2" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Problem Photo 3</label>
+                <div class="col-sm-8">
+                    @if (!string.IsNullOrEmpty(Model.ExaminationDto.ProblemPhotoPath3))
+                    {
+                        <img src="@Model.ExaminationDto.ProblemPhotoPath3" class="img-thumbnail mb-2" style="max-width: 100px;" />
+                    }
+                    <input class="form-control" asp-for="ExaminationDto.ProblemPhoto3" type="file">
+                    <span asp-validation-for="ExaminationDto.ProblemPhoto3" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Problem Photo 4</label>
+                <div class="col-sm-8">
+                    @if (!string.IsNullOrEmpty(Model.ExaminationDto.ProblemPhotoPath4))
+                    {
+                        <img src="@Model.ExaminationDto.ProblemPhotoPath4" class="img-thumbnail mb-2" style="max-width: 100px;" />
+                    }
+                    <input class="form-control" asp-for="ExaminationDto.ProblemPhoto4" type="file">
+                    <span asp-validation-for="ExaminationDto.ProblemPhoto4" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Submit Butonu -->
+            <div class="row mb-3">
+                <div class="offset-sm-4 col-sm-4 d-grid">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+                <div class="col-sm-4 d-grid">
+                    <a asp-action="Details" asp-route-id="@Model.ExaminationDto.PatientId"
+                       class="btn btn-outline-primary">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
