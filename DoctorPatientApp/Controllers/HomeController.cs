@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using DoctorPatientApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoctorPatientApp.Controllers
@@ -18,10 +19,17 @@ namespace DoctorPatientApp.Controllers
             return View();
         }
 
+        [Authorize(Roles = "User, Admin")]
+        public IActionResult News()
+        {
+            return View();
+        }
+                
         public IActionResult Privacy()
         {
             return View();
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

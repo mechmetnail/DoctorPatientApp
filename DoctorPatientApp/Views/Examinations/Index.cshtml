@@ -3,57 +3,170 @@
 	ViewData["Title"] = "Patients Page";
 }
 <div class="search-container">
-	<input type="text" id="searchInput" placeholder="Search...">
-	<button class="btn btn-primary" id="searchButton">Search</button>
-	<br><br>
+	<div class="input-group">
+		<input type="text" id="searchInput" placeholder="Search...">
+		<button onclick="searchAtPage()" id="searchButton" class="btn btn-primary">Search</button>
+		<button onclick="clearHighlights()" id="clearButton" class="btn btn-secondary">Clear</button>
+	</div>
+	<div id="matchInfo" class="mt-2 text-muted" style="display: none;">
+		<span id="currentMatch" class="badge bg-info ms-2"></span>
+	</div>
+	<br>
+</div>
+<div class="container">
 	<a class="btn btn-info" asp-controller="Patients" asp-action="Index">All Patients</a>
 </div>
 <br>
-<table class="table table-sm table-bordered">
-	<thead>
-		<tr>
-			<th>P. Id</th>
-			<th>E. Id</th>
-			<th>P. Name</th>
-			<th>P. Efka</th>
-			<th>E. Results</th>
-			<th>E. Notes</th>
-			<th>E. Medicines</th>
-			<th>E. Photo</th>
-			<th>E. Date</th>
-			<th style="width: 115px"></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var exam in Model)
-		{
+<div style="cursor: default;" class="btn btn-success mb-2">
+	<table class="table table-success table-striped table-bordered">
+		<thead>
 			<tr>
-				<td>@exam.PatientId</td>
-				<td>@exam.ExaminationId</td>
-				<td>@exam.Patient.FullName</td>
-				<td>@exam.Patient.Efka</td>				
-				<td>@exam.Results</td>
-				<td>@exam.Notes</td>
-				<td>@exam.Medicines</td>
-				<td>
-					@if (exam.ProblemPhotoPath != null)
-					{
-						<img src="~/@exam.ProblemPhotoPath" width="100" class="img-fluid" alt="Patient Photo">
-					}
-					else
-					{
-						<img src="~/img/nophoto.jpg" width="100" class="img-fluid" alt="Patient Photo">
-					}					
-				</td>
-				<td>@exam.ExamDate.ToString("dd/MM/yyyy")</td>
-				<td style="white-space:nowrap">
-
-					<a class="btn btn-success btn-sm" asp-controller="Patients" asp-action="Details" asp-route-id="@exam.PatientId">Details</a>
-
-					<a class="btn btn-primary btn-sm" asp-controller="Patients" asp-action="EditExam" asp-route-id="@exam.ExaminationId">Edit</a>
-
-				</td>
+				<th>P. Id</th>
+				<th>E. Id</th>
+				<th>P. Name</th>
+				<th>P. Efka</th>
+				<th>E. Results</th>
+				<th>E. Notes</th>
+				<th>E. Medicines</th>
+				<th>E. Photo</th>
+				<th>E. Date</th>
+				<th style="width: 120px"></th>
 			</tr>
+		</thead>
+		<tbody>
+			@foreach (var exam in Model)
+			{
+				<tr>
+					<td>@exam.PatientId</td>
+					<td>@exam.ExaminationId</td>
+					<td>@exam.Patient.FullName</td>
+					<td>@exam.Patient.Efka</td>
+					<td>@exam.Results</td>
+					<td>@exam.Notes</td>
+					<td>@exam.Medicines</td>
+					<td>
+						@if (exam.ProblemPhotoPath != null)
+						{
+							<a href="@exam.ProblemPhotoPath"><img src="@exam.ProblemPhotoPath" width="100" class="img-fluid" alt="Patient Photo"></a>
+						}
+						else
+						{
+							<img src="~/img/nophoto.jpg" width="100" class="img-fluid" alt="Patient Photo">
+						}
+					</td>
+					<td>@exam.ExamDate.ToString("dd/MM/yyyy")</td>
+					<td style="white-space:nowrap">
+
+						<a class="btn btn-success btn-sm" asp-controller="Patients" asp-action="Details" asp-route-id="@exam.PatientId">Details</a>
+
+						<a class="btn btn-primary btn-sm" asp-controller="Patients" asp-action="EditExam" asp-route-id="@exam.ExaminationId">Edit</a>
+
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+
+
+@section Scripts {
+
+
+	<script>
+		// Variables
+		let allMatches = [];
+		let currentMatchIndex = -1;
+
+		// Support enter click
+		document.getElementById("searchInput").addEventListener("keypress", (e) => {
+			if (e.key === "Enter") searchAtPage();
+		});
+
+		// Main search function
+		function searchAtPage() {
+			const searchedWord = document.getElementById("searchInput").value.trim().toLowerCase();
+			if (!searchedWord) return;
+
+			clearHighlights();
+			allMatches = [];
+			currentMatchIndex = -1;
+
+			// Search only table cells
+			document.querySelectorAll('td').forEach(td => {
+				const originalContent = td.innerHTML;
+				const regex = new RegExp(searchedWord, 'gi');
+
+				td.innerHTML = originalContent.replace(regex, (match) => {
+					allMatches.push({element: td, match: match});
+					return `<span class="highlight">${match}</span>`;
+				});
+			});
+
+			// Manage results
+			if (allMatches.length > 0) {
+				currentMatchIndex = 0;
+				highlightCurrentMatch();
+				addNavigationControls();
+			}
 		}
-	</tbody>
-</table>
+
+		// Search controls
+		function addNavigationControls() {
+			const navDiv = document.createElement('div');
+			navDiv.className = 'match-navigation mt-2';
+			navDiv.innerHTML = `
+				<button onclick="prevMatch()" class="btn btn-sm btn-info">← Previous</button>
+				<span class="mx-2">${currentMatchIndex + 1}/${allMatches.length}</span>
+				<button onclick="nextMatch()" class="btn btn-sm btn-info">Next →</button>
+			`;
+
+			document.querySelector('.search-container').appendChild(navDiv);
+		}
+
+		// Next/Previous matchings
+		function nextMatch() {
+			if (currentMatchIndex < allMatches.length - 1) {
+				currentMatchIndex++;
+				highlightCurrentMatch();
+			}
+		}
+
+		function prevMatch() {
+			if (currentMatchIndex > 0) {
+				currentMatchIndex--;
+				highlightCurrentMatch();
+			}
+		}
+
+		//  Highlight active matchings
+		function highlightCurrentMatch() {
+			document.querySelectorAll('.highlight').forEach(el => el.style.backgroundColor = 'yellow');
+
+			const currentMatch = allMatches[currentMatchIndex];
+			currentMatch.element.querySelector('.highlight').style.backgroundColor = '#ff6b6b';
+			currentMatch.element.scrollIntoView({behavior: 'smooth', block: 'center'});
+		}
+
+		// Clear
+		function clearHighlights() {
+			document.querySelectorAll('.highlight').forEach(el => {
+				el.outerHTML = el.innerHTML;
+			});
+			const navDiv = document.querySelector('.match-navigation');
+			if (navDiv) navDiv.remove();
+		}
+	</script>
+
+	<style>
+		.highlight {
+			background-color: #ffeb3b;
+			box-shadow: 0 0 8px rgba(255, 235, 59, 0.5);
+			border-radius: 3px;
+			padding: 2px 4px;
+			transition: background-color 0.3s;
+		}
+	</style>
+}
+
+
+

@@ -1,9 +1,11 @@
 ﻿using DoctorPatientApp.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DoctorPatientApp.Controllers
 {
+    [Authorize(Roles = "User, Admin")]
     public class ExaminationsController : Controller
     {
         private readonly DataContext _context;

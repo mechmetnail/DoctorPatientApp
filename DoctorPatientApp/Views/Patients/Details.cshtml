@@ -4,7 +4,27 @@
 	ViewData["Title"] = "Patient Details";
 }
 
-<div class="container">
+
+<style>
+	@@media print {
+		body * {
+			visibility: hidden;
+		}
+
+		#examTable, #examTable * {
+			visibility: visible;
+		}
+
+		#examTable {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+		}
+	}
+</style>
+
+<div class="container mb-3">
 	<h2>@Model.FullName</h2>
 
 	<!-- Patient Informations -->
@@ -28,10 +48,11 @@
 
 				<dt class="col-sm-4">City:</dt>
 				<dd class="col-sm-8">@Model.City</dd>
+
 			</dl>
 		</div>
 		<div class="col-md-6">
-			<img src="~/@Model.PhotoPath" width="100" class="img-fluid" alt="Patient Photo">
+			<img src="~/@Model.PhotoPath" width="200" class="img-fluid btn btn-secondary" alt="Patient Photo" style="cursor: default;">
 		</div>
 	</div>
 
@@ -43,9 +64,9 @@
 	<div class="container">
 		<!-- Details.cshtml içinde -->
 		<a class="btn btn-primary"
-		asp-controller="Patients"
-		asp-action="CreateExam"
-		asp-route-id="@Model.PatientId">
+		   asp-controller="Patients"
+		   asp-action="CreateExam"
+		   asp-route-id="@Model.PatientId">
 			<!-- ID'yi ekle -->
 			Create Examination
 		</a>
@@ -54,81 +75,103 @@
 	<br>
 	<!-- Examination Records -->
 	<h4>Examination History</h4>
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th>Date</th>
-				<th>Results</th>
-				<th>Medicines</th>
-				<th>Notes</th>
-				<th>Problem Photos 1</th>
-				<th>Problem Photos 2</th>
-				<th>Problem Photos 3</th>
-				<th>Problem Photos 4</th>
-				<th style="width: 115px"></th>
-			</tr>
-		</thead>
-		<tbody>
-
-			@foreach (var exam in Model.Examination)
-			{
+	<div style="cursor: default;" class="btn btn-primary mb-2">
+		<table class="table table-info table-striped" id="examTable">
+			<thead>
 				<tr>
-					<td>@exam.ExamDate.ToString("dd/MM/yyyy")</td>
-					<td>@exam.Results</td>
-					<td>@exam.Medicines</td>
-					<td>@exam.Notes</td>
-					<td>
-						@if (exam.ProblemPhotoPath != null)
-						{
-							<img src="~/@exam.ProblemPhotoPath" width="70" class="img-fluid" alt="Patient Photo">
-						}
-						else
-						{
-							<img src="~/img/nophoto.jpg" width="70" class="img-fluid" alt="Patient Photo">
-						}
-					</td>
-					<td>
-						@if (exam.ProblemPhotoPath2 != null)
-						{
-							<img src="~/@exam.ProblemPhotoPath2" width="70" class="img-fluid" alt="Patient Photo">
-						}
-						else
-						{
-							<img src="~/img/nophoto.jpg" width="70" class="img-fluid" alt="Patient Photo">
-						}
-					</td>
-					<td>
-						@if (exam.ProblemPhotoPath3 != null)
-						{
-							<img src="~/@exam.ProblemPhotoPath3" width="70" class="img-fluid" alt="Patient Photo">
-						}
-						else
-						{
-							<img src="~/img/nophoto.jpg" width="70" class="img-fluid" alt="Patient Photo">
-						}
-					</td>
-					<td>
-						@if (exam.ProblemPhotoPath4 != null)
-						{
-							<img src="~/@exam.ProblemPhotoPath4" width="70" class="img-fluid" alt="Patient Photo">
-						}
-						else
-						{
-							<img src="~/img/nophoto.jpg" width="70" class="img-fluid" alt="Patient Photo">
-						}
-					</td>
-					<td style="white-space:nowrap">
-
-						<a class="btn btn-primary btn-sm" asp-controller="Patients" asp-action="EditExam" asp-route-id="@exam.ExaminationId">Edit</a>
-
-						<a class="btn btn-danger btn-sm" asp-controller="Patients" asp-action="DeleteExam" asp-route-id="@exam.ExaminationId">Delete</a>
-
-					</td>
+					<th>Date</th>
+					<th>Results</th>
+					<th>Medicines</th>
+					<th>Notes</th>
+					<th>Problem Photos 1</th>
+					<th>Problem Photos 2</th>
+					<th>Problem Photos 3</th>
+					<th>Problem Photos 4</th>
+					<th onclick="window.print()" class="btn btn-light btn-sm m-2 bg-secondary text-white border-1" style="width: 120px">Print</th>
 				</tr>
-			}
+			</thead>
+			<tbody>
 
-		</tbody>
-	</table>
+				@foreach (var exam in Model.Examination)
+				{
+					<tr>
+						<td>@exam.ExamDate.ToString("dd/MM/yyyy")</td>
+						<td>@exam.Results</td>
+						<td>@exam.Medicines</td>
+						<td>@exam.Notes</td>
+						<td>
+							@if (exam.ProblemPhotoPath != null)
+							{
+								<a href="@exam.ProblemPhotoPath">
+									<img src="@exam.ProblemPhotoPath" width="70" class="img-fluid" alt="Patient Photo">
+								</a>
+							}
+							else
+							{
+								<img src="~/img/nophoto.jpg" width="70" class="img-fluid" alt="Patient Photo">
+							}
+						</td>
+						<td>
+							@if (exam.ProblemPhotoPath2 != null)
+							{
+								<a href="@exam.ProblemPhotoPath2">
+									<img src="@exam.ProblemPhotoPath2" width="70" class="img-fluid" alt="Patient Photo">
+								</a>
+							}
+							else
+							{
+								<img src="~/img/nophoto.jpg" width="70" class="img-fluid" alt="Patient Photo">
+							}
+						</td>
+						<td>
+							@if (exam.ProblemPhotoPath3 != null)
+							{
+								<a href="@exam.ProblemPhotoPath3">
+									<img src="@exam.ProblemPhotoPath3" width="70" class="img-fluid" alt="Patient Photo">
+								</a>
+							}
+							else
+							{
+								<img src="~/img/nophoto.jpg" width="70" class="img-fluid" alt="Patient Photo">
+							}
+						</td>
+						<td>
+							@if (exam.ProblemPhotoPath4 != null)
+							{
+								<a href="@exam.ProblemPhotoPath4">
+									<img src="@exam.ProblemPhotoPath4" width="70" class="img-fluid" alt="Patient Photo">
+								</a>
+							}
+							else
+							{
+								<img src="~/img/nophoto.jpg" width="70" class="img-fluid" alt="Patient Photo">
+							}
+						</td>
+						<td style="white-space:nowrap">
 
+							<a class="btn btn-primary btn-sm" asp-controller="Patients" asp-action="EditExam" asp-route-id="@exam.ExaminationId">Edit</a>
+
+							<a class="btn btn-danger btn-sm" asp-controller="Patients" asp-action="DeleteExam" asp-route-id="@exam.ExaminationId">Delete</a>
+
+						</td>
+					</tr>
+				}
+
+			</tbody>
+		</table>
+	</div>
 	<a asp-action="Index" class="btn btn-secondary">Back</a>
 </div>
+
+
+<script>
+	function printRow(button) {
+		const row = button.closest('tr');
+		const printContent = row.innerHTML;
+		const originalContent = document.body.innerHTML;
+
+		document.body.innerHTML = printContent;
+		window.print();
+		document.body.innerHTML = originalContent;
+	}
+</script>

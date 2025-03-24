@@ -10,7 +10,8 @@ using System.Text.Json;
 
 namespace DoctorPatientApp.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles = "Admin")]
+
     public class PatientsController : Controller
     {
         private readonly DataContext _context;
@@ -58,7 +59,7 @@ namespace DoctorPatientApp.Controllers
                 City = patientDto.City,
                 Phone = patientDto.Phone,
                 AFM = patientDto.AFM,
-                PhotoPath = "/img/" + photoFileName, // Yolu doğru ayarla
+                PhotoPath = "~/img/" + photoFileName, // Yolu doğru ayarla
                 EnrollingDate = patientDto.EnrollingDate
             };
 
@@ -423,6 +424,16 @@ namespace DoctorPatientApp.Controllers
             existingExamination.ProblemPhotoPath2 = await HandlePhotoUpdate(
                 viewModel.ExaminationDto.ProblemPhoto2,
                 existingExamination.ProblemPhotoPath2
+            );
+
+            existingExamination.ProblemPhotoPath3 = await HandlePhotoUpdate(
+               viewModel.ExaminationDto.ProblemPhoto3,
+               existingExamination.ProblemPhotoPath3
+           );
+
+            existingExamination.ProblemPhotoPath4 = await HandlePhotoUpdate(
+                viewModel.ExaminationDto.ProblemPhoto4,
+                existingExamination.ProblemPhotoPath4
             );
 
             // Diğer fotoğraflar için aynı işlem
